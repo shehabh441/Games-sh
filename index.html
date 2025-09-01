@@ -6,56 +6,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(to right, #6a11cb, #2575fc);
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       color: white;
-      text-align: center;
-      padding: 50px;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      animation: fadeIn 1s ease-in-out;
     }
 
-    input, button {
-      padding: 12px;
-      margin: 10px;
-      width: 260px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .box {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px 30px;
       border-radius: 15px;
-      display: inline-block;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 300px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    input {
+      background: rgba(255,255,255,0.8);
+      color: #333;
+    }
+
+    button {
+      background: #00c9ff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #0097cc;
     }
 
     .switch-btn {
       background: transparent;
       border: none;
-      color: #fff;
+      color: #ddd;
       text-decoration: underline;
-      cursor: pointer;
       margin-top: 10px;
+      cursor: pointer;
     }
 
-    h2 {
-      margin-bottom: 20px;
+    #status {
+      margin-top: 10px;
+      color: #ffcccc;
     }
   </style>
 </head>
 <body>
 
-  <h2 id="form-title">تسجيل الدخول</h2>
-
   <div class="box">
-    <input type="email" id="email" placeholder="البريد الإلكتروني"><br>
-    <input type="password" id="password" placeholder="كلمة المرور"><br>
-
-    <button id="action-btn" onclick="login()">تسجيل الدخول</button><br>
-    <button onclick="loginWithGoogle()">تسجيل الدخول بـ Google</button><br>
-
+    <h2 id="form-title">تسجيل الدخول</h2>
+    <input type="email" id="email" placeholder="البريد الإلكتروني">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button id="action-btn" onclick="login()">تسجيل الدخول</button>
+    <button onclick="loginWithGoogle()">تسجيل الدخول بـ Google</button>
     <button class="switch-btn" onclick="toggleMode()">أو إنشاء حساب جديد</button>
-
     <p id="status"></p>
   </div>
 
@@ -100,8 +132,7 @@
 
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          document.getElementById("status").innerText = "✅ تم تسجيل الدخول بنجاح";
-          console.log("تم الدخول:", userCredential.user);
+          window.location.href = "dashboard.html"; // ✅ الانتقال بعد الدخول
         })
         .catch((error) => {
           document.getElementById("status").innerText = "❌ " + error.message;
@@ -114,8 +145,7 @@
 
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          document.getElementById("status").innerText = "✅ تم إنشاء الحساب بنجاح";
-          console.log("تم التسجيل:", userCredential.user);
+          window.location.href = "dashboard.html"; // ✅ الانتقال بعد إنشاء الحساب
         })
         .catch((error) => {
           document.getElementById("status").innerText = "❌ " + error.message;
@@ -126,11 +156,9 @@
       const provider = new GoogleAuthProvider();
       signInWithPopup(auth, provider)
         .then((result) => {
-          document.getElementById("status").innerText = "✅ تم تسجيل الدخول بـ Google";
-          console.log("Google user:", result.user);
+          window.location.href = "dashboard.html"; // ✅ الانتقال بعد Google
         })
         .catch((error) => {
-          console.log(error);
           document.getElementById("status").innerText = "❌ " + error.message;
         });
     }
