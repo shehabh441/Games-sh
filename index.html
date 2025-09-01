@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>تسجيل الدخول / إنشاء حساب</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+
+    input, button {
+      padding: 12px;
+      margin: 10px;
+      width: 260px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .box {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      border-radius: 15px;
+      display: inline-block;
+    }
+
+    .switch-btn {
+      background: transparent;
+      border: none;
+      color: #fff;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 id="form-title">تسجيل الدخول</h2>
+
+  <div class="box">
+    <input type="email" id="email" placeholder="البريد الإلكتروني"><br>
+    <input type="password" id="password" placeholder="كلمة المرور"><br>
+
+    <button id="action-btn" onclick="login()">تسجيل الدخول</button><br>
+    <button onclick="loginWithGoogle()">تسجيل الدخول بـ Google</button><br>
+
+    <button class="switch-btn" onclick="toggleMode()">أو إنشاء حساب جديد</button>
+
+    <p id="status"></p>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    // إعداد Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAYcZ2_RjaI4fjP14QlqbUbL3rWvPPWnas",
+      authDomain: "sheko-store.firebaseapp.com",
+      projectId: "sheko-store",
+      storageBucket: "sheko-store.firebasestorage.app",
+      messagingSenderId: "113892775847",
+      appId: "1:113892775847:web:2aa4c11c3f5dd1d15f0882",
+      measurementId: "G-MQCQE3X077"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    let isLogin = true;
+
+    // التبديل بين تسجيل الدخول وإنشاء الحساب
+    window.toggleMode = function () {
+      isLogin = !isLogin;
+      document.getElementById("form-title").innerText = isLogin ? "تسجيل الدخول" : "إنشاء حساب جديد";
+      document.getElementById("action-btn").innerText = isLogin ? "تسجيل الدخول" : "إنشاء الحساب";
+      document.getElementById("action-btn").setAttribute("onclick", isLogin ? "login()" : "register()");
+      document.querySelector(".switch-btn").innerText = isLogin ? "أو إنشاء حساب جديد" : "أو العودة لتسجيل الدخول";
+      document.getElementById("status").innerText = "";
+    }
+
+    // تسجيل الدخول بالبريد وكلمة المرور
+    window.login = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          document.getElementById("status").innerText = "✅ تم تسجيل الدخول بنجاح";
+          console.log("تم الدخول:", userCredential.user);
+          // إعادة التوجيه عند الحاجة
+          // window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          document.getElementById("status").innerText = "❌ " + error.message;
+        });
+    }
+
+    // إنشاء حساب جديد
+    window.register = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          document.getElementById("status").innerText = "✅ تم إنشاء الحساب وتسجيل الدخول";
+          console.log("تم التسجيل:", userCredential.user);
+          // window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          document.getElementById("status").innerText = "❌ " + error.message;
+        });
+    }
+
+    // تسجيل الدخول باستخدام Google
+    window.loginWithGoogle = function () {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          document.getElementById("status").innerText = "✅ تم تسجيل الدخول بـ Google";
+          console.log("Google user:", result.user);
+          // window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          document.getElementById("status").innerText = "❌ " + error.message;
+        });
+    }
+  </script>
+
+</body>
+</html>
