@@ -62,14 +62,19 @@
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signInWithPopup,
+      GoogleAuthProvider,
+      createUserWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    // إعداد Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAYcZ2_RjaI4fjP14QlqbUbL3rWvPPWnas",
       authDomain: "sheko-store.firebaseapp.com",
       projectId: "sheko-store",
-      storageBucket: "sheko-store.firebasestorage.app",
+      storageBucket: "sheko-store.appspot.com",
       messagingSenderId: "113892775847",
       appId: "1:113892775847:web:2aa4c11c3f5dd1d15f0882",
       measurementId: "G-MQCQE3X077"
@@ -80,7 +85,6 @@
 
     let isLogin = true;
 
-    // التبديل بين تسجيل الدخول وإنشاء الحساب
     window.toggleMode = function () {
       isLogin = !isLogin;
       document.getElementById("form-title").innerText = isLogin ? "تسجيل الدخول" : "إنشاء حساب جديد";
@@ -90,7 +94,6 @@
       document.getElementById("status").innerText = "";
     }
 
-    // تسجيل الدخول بالبريد وكلمة المرور
     window.login = function () {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
@@ -99,40 +102,35 @@
         .then((userCredential) => {
           document.getElementById("status").innerText = "✅ تم تسجيل الدخول بنجاح";
           console.log("تم الدخول:", userCredential.user);
-          // إعادة التوجيه عند الحاجة
-          // window.location.href = "dashboard.html";
         })
         .catch((error) => {
           document.getElementById("status").innerText = "❌ " + error.message;
         });
     }
 
-    // إنشاء حساب جديد
     window.register = function () {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          document.getElementById("status").innerText = "✅ تم إنشاء الحساب وتسجيل الدخول";
+          document.getElementById("status").innerText = "✅ تم إنشاء الحساب بنجاح";
           console.log("تم التسجيل:", userCredential.user);
-          // window.location.href = "dashboard.html";
         })
         .catch((error) => {
           document.getElementById("status").innerText = "❌ " + error.message;
         });
     }
 
-    // تسجيل الدخول باستخدام Google
     window.loginWithGoogle = function () {
       const provider = new GoogleAuthProvider();
       signInWithPopup(auth, provider)
         .then((result) => {
           document.getElementById("status").innerText = "✅ تم تسجيل الدخول بـ Google";
           console.log("Google user:", result.user);
-          // window.location.href = "dashboard.html";
         })
         .catch((error) => {
+          console.log(error);
           document.getElementById("status").innerText = "❌ " + error.message;
         });
     }
