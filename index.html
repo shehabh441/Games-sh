@@ -93,26 +93,29 @@
 
   <!-- Firebase SDK -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
     import {
       getAuth,
       signInWithEmailAndPassword,
       signInWithPopup,
       GoogleAuthProvider,
       createUserWithEmailAndPassword
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
+    // Firebase config
     const firebaseConfig = {
-      apiKey: "AIzaSyAYcZ2_RjaI4fjP14QlqbUbL3rWvPPWnas",
-      authDomain: "sheko-store.firebaseapp.com",
-      projectId: "sheko-store",
-      storageBucket: "sheko-store.appspot.com",
-      messagingSenderId: "113892775847",
-      appId: "1:113892775847:web:2aa4c11c3f5dd1d15f0882",
-      measurementId: "G-MQCQE3X077"
+      apiKey: "AIzaSyBb0516fW2-QKxSJpfZ6pVqmV97aFO_v8w",
+      authDomain: "games-sh.firebaseapp.com",
+      projectId: "games-sh",
+      storageBucket: "games-sh.firebasestorage.app",
+      messagingSenderId: "876642234628",
+      appId: "1:876642234628:web:6afcac3c53743b666c6051",
+      measurementId: "G-XLCPRTJJKK"
     };
 
     const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const auth = getAuth(app);
 
     let isLogin = true;
